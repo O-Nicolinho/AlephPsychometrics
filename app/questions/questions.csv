@@ -1,0 +1,66 @@
+id,question,reverse,trait,category
+2,"I make social events more vibrant",false,e,big5
+3,"I feel little concern for most people",true,a,big5
+4,"I easily get stressed or anxious",false,n,big5
+5,"I have an extensive vocabulary",false,o,big5
+6,"I am very chatty",false,e,big5
+7,"I am people-oriented",false,a,big5
+8,"I often leave my stuff all over the place",true,c,big5
+9,"I am a calm and relaxed person",true,n,big5
+10,"I care about what's practical, I dont care about learning abstract concepts just for the fun of it",true,o,big5
+11,"I feel comfortable around people",false,e,big5
+12,"I often insult or belittle others",true,a,big5
+13,"I am a detail-oriented person, I care about the little things.",false,c,big5
+14,"I am worried a lot of the time.",false,n,big5
+15,"I am imaginative and creative",false,o,big5
+16,"I avoid being the center of attention",true,e,big5
+17,"I'm sympathetic and often feel what others are feeling",false,a,big5
+18,"I'm not an orderly person",true,c,big5
+19,"I rarely feel down or sad",true,n,big5
+20,"I do not care much for learning or discussing abstract or complex ideas just for fun",true,o,big5
+21,"I often start conversations with strangers",false,e,big5
+22,"Other peoples' problems do not interest me at all.",true,a,big5
+23,"I get my chores, tasks, and duties done as soon as possible",false,c,big5
+24,"Things can get to me easily",false,n,big5
+25,"Others frequently say that my contributions are interesting or insightful",false,o,big5
+26,"I prefer listening to talking",true,e,big5
+27,"People would say that I'm soft-hearted",false,a,big5
+28,"I often forget to put things back in their place once I'm done using them",true,c,big5
+29,"I feel sad or upset fairly easily",false,n,big5
+30,"I am a disciplined person, I do what has to be done consistently, regardless of how motivated I may feel",false,c,big5
+31,"I don't think there is much value in reading fiction",true,o,big5
+32,"I am happy to sacrifice the present for the future",false,ni,jung
+33,"I often get insights out of nowhere",false,ni,jung
+34,"I rely on my gut feeling a lot of the time",false,ni,jung
+35,"I have an uncanny ability to predict how things will unfold",false,ni,jung
+36,"My brain jumps from topic to topic incredibly quickly",false,ne,jung
+37,"I am able to generate new ideas out of thin air",false,ne,jung
+38,"I often can spot connections between things that other people miss",false,ne,jung
+39,"I love starting projects, activities, hobbies, but it's hard for me to stick to one thing for a long time.",false,ne,jung
+40,"I think the best way to predict what will happen is to focus on what has happened before",false,si,jung
+41,"I have a great memory",false,si,jung
+42,"For me, my past experiences are critical when taking important decisions",false,si,jung
+43,"I am a person of habit, I enjoy comfort and predictability",false,si,jung
+44,"I like to live in the moment",false,se,jung
+45,"I love moving around, be it dancing, exercise, or something else, it makes me feel alive.",false,se,jung
+46,"I am very perceptive, I look at my surroundings very carefully",false,se,jung
+47,"I value aesthetics and appearance",false,se,jung
+48,"I don't accept statements just because a well-informed or respected person says them, I need to understand their reasoning step-by-step",false,ti,jung
+49,"I trust my judgment over other peoples'",false,ti,jung
+50,"I've been told I overthink things or get too caught up in technicalities",false,ti,jung
+51,"If something makes sense to me, disagreements from my peers will not change my mind unless they can show me a flaw in my reasoning",false,ti,jung
+52,"I am primarily results-driven",false,te,jung
+53,"I am good at creating systems or structuring things",false,te,jung
+54,"I like planning ahead and I'm good at doing so",false,te,jung
+55,"I think performance is best measured empirically, factors that cannot be measured usually do not matter.",false,te,jung
+56,"I have a strong inner sense of right and wrong that I follow even when others disagree with me",false,fi,jung
+57,"I find it almost impossible to act in a way that goes against my personal values, even if it would make things easier",false,fi,jung
+58,"I find it difficult to express my feelings directly, I prefer doing so through art, music, or other means",false,fi,jung
+59,"I prefer to be myself and being genuine, even if it leads to rejection or animosity",false,fi,jung
+60,"I naturally adjust my tone and behaviour depending on who I'm with, to make them feel comfortable",false,fe,jung
+61,"When there's tension in a group, I feel a strong urge to resolve it, even if the conflict doesn't involve me",false,fe,jung
+62,"I find it easy to pick up on what someone is feeling",false,fe,jung
+63,"I'm capable of being manipulative",false,fe,jung
+64,"I have never felt sad in my entire life",false,x,filter
+65,"I think I am a perfect person",false,x,filter
+66,"I am never mean to others",false,x,filter

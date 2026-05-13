@@ -1,5 +1,12 @@
 from app.services.scoring import return_question_map_filtered_by
 from app.questions.csv_questions import LOWEST_QID, HIGHEST_QID
+
+#thresholds:
+THRESHOLD1 = 0.62
+THRESHOLD2 = 0.6
+THRESHOLD3 = 0.95
+
+
 def validate_responses(responses: dict[int,int]) -> tuple[bool,str]:
 
     valid_count = 0
@@ -35,6 +42,55 @@ def validate_responses(responses: dict[int,int]) -> tuple[bool,str]:
     return True, ""
 
 
+def crit_one_score(responses:dict[int,int]) -> float:
 
-def reliability_score(responses:dict[int,int]) -> int:
-    print("WIP")
+    # qid 64 and 65 are main filter questions
+    # almost all people will answer strongly disagree to both of them,
+    # so a score of 5 on both of them is highly suspicious.
+
+    q1_ans = responses[64]
+    q2_ans = responses[65]
+
+    # formula:
+    # (q1^2 + q2^2) / 25
+
+    return (q1_ans**2 + q2_ans**2) / 50
+
+
+
+def crit_two_score(responses:dict[int,int]) -> float:
+    # we have two consistency checks:
+    # 12 & 66, which are inverses of each other
+    # 17 & 22, are also inverses of each other.
+
+    qa1 = responses[12]
+    qa2 = 6-responses[66] # we reverse the score
+
+    qb1 = responses[17]
+    qb2 = 6-responses[22]
+
+    return ( (qa1-qa2)**2 + (qb1-qb2)**2 ) / 32
+
+
+def crit_three_score(responses:dict[int,int]) -> dict[int,float]:
+    # answer counts:
+    count1 = sum(1 for v in responses.values() if v == 1)
+    count2 = sum(1 for v in responses.values() if v == 2)
+    count3 = sum(1 for v in responses.values() if v == 3)
+    count4 = sum(1 for v in responses.values() if v == 4)
+    count5 = sum(1 for v in responses.values() if v == 5)
+
+    total = len(responses)
+
+    return {1 : count1/total, 2: count2/total, 3: count3/total, 4: count4/total, 5: count5/total}
+
+def reliability_score(responses:dict[int,int]) -> bool:
+    crit1 = crit_one_score(responses)
+    crit2 = crit_two_score(responses)
+    crit3 = crit_three_score(responses)
+
+    if crit1 >= THRESHOLD1 or crit2 >= THRESHOLD2 or max(crit3) >= THRESHOLD3:
+        return False
+    else:
+        return True
+

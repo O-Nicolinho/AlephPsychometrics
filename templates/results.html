@@ -165,7 +165,7 @@
 <div class="results-section animal-section">
     {% if animal %}
     <img src="/static/{{ animal }}.png" alt="{{ animal }}">
-    <p class="animal-title">You are the {{ animal | replace("_", " ") | capitalize }}</p>
+    <p class="animal-title">You are: The {{ animal | replace("_", " ") | capitalize }}</p>
     {% endif %}
 
     {% if summary %}

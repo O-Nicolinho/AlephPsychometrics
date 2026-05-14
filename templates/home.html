@@ -23,24 +23,13 @@
 {% block content %}
 <h1>Welcome!</h1>
 
-
-<p>Help us with our research! We're using machine learning to (hopefully) build a more accurate and transparent way to determine your personality type. We're interested in seeing whether ML methods can help us build more robust and accurate personality classification systems. We especially value responses from people who already have some idea of their Jungian/MBTI type, but everyone is welcome.</p>
-
-<div class="info-box">
-    <p>As our goals are reached, we will advance with the project and provide regular updates. We will use the data gathered from your quiz responses to train an ML model that predicts Jungian type more accurately than existing online quizzes, and of course this quiz will be freely available to all. We will also make our methodology and results publicly available.</p>
-</div>
+<p>Help us with our research! We're using machine learning to build more robust and effective personality-classification systems. The responses you provide are essential for these ends. Responses from people familiar with their MBTI/Jungian type are especially appreciated, but all are welcome and encouraged to take the quiz!.</p>
 
 <div class="info-box">
-    <p>If you have dyslexia, consider clicking the button on the top right to use a more dyslexic-friendly font.</p>
+    <p>The quiz takes about 10 minutes. At the end, you'll receive a breakdown of your Big Five score, a personality analysis tailored to you, and for fun, an animal match (Which is a necessity for online quizzes!). All responses are anonymous.</p>
 </div>
 
-<div class="info-box">
-    <p>You can optionally share your Reddit username for our (slightly more serious) NLP research. Details are provided in the quiz.</p>
-</div>
-
-<div class="info-box">
-    <p>The quiz has 65 questions and takes about 10 minutes to complete. All responses are anonymous. You will get your Big 5 score at the end.</p>
-</div>
+<a href="/quiz" class="btn" style="margin: 20px 0; display: inline-block;">Take the Quiz</a>
 
 <div style="margin: 24px 0;">
     <div style="display: flex; justify-content: space-between; font-size: 13px; color: #888; margin-bottom: 6px;">
@@ -53,11 +42,19 @@
         <div style="width: {{ pct }}%; height: 12px; border-radius: 4px; background-color: #1b2a4a;"></div>
         <div style="position: absolute; left: 40%; top: -4px; bottom: -4px; width: 2px; background-color: #e74c3c;"></div>
     </div>
-    <div style="display: flex; font-size: 11px; color: #aaa; margin-top: 4px;">
-        <span style="position: relative; left: 38%;">2k</span>
-        <span style="position: absolute; right: 24px;">5k</span>
+    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #aaa; margin-top: 4px;">
+    <span style="margin-left: 38%;">2k</span>
+    <span>5k</span>
     </div>
 </div>
 
-<a href="/quiz" class="btn">Take the Quiz</a>
+<div class="info-box">
+    <p>As we reach our goals, we will advance with the project and provide regular updates. Our first step will be to use the data gathered to train an ML model that predicts Jungian type more accurately than existing online quizzes. The resulting quiz and our methodology will be public and freely available. </p>
+</div>
+
+<div class="info-box">
+    <p>You can optionally share your Reddit username to help with our (more serious) NLP research endeavours. Details are provided in the quiz.</p>
+</div>
+
+<p style="font-size: 12px; color: #999; margin-top: 16px;">Dyslexia-friendly font available via the button in the top right.</p>
 {% endblock %}

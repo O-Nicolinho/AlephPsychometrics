@@ -16,7 +16,7 @@ def validate_responses(responses: dict[int,int]) -> tuple[bool,str]:
     # we expect it to be empty, otherwise there are questions in our
     # database that were not answered, so the submission is incomplete.
 
-    qid_dict = return_question_map_filtered_by()
+    qid_dict = return_question_map_filtered_by("_")
 
 
     for qid, ans in responses.items():

@@ -54,6 +54,9 @@ def score_big_five(responses: dict[int,int]) -> dict[str, float]:
         else:
             output[bigfivedict[qid].trait] = output[bigfivedict[qid].trait] + ans
 
+    for k in output:
+        output[k] = round(((output[k] - 6) / 24 ) * 100, 2)
+
     return output
 
 def score_jung(responses: dict[int,int]) -> dict[str, float]:

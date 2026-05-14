@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Aleph Psychometrics{% endblock %}
+
+{% block extra_css %}
+<style>
+    .info-box {
+        background: #ffffff;
+        border: 1px solid #e0ddd8;
+        border-radius: 6px;
+        padding: 16px 20px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #444;
+    }
+    .info-box p {
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Welcome!</h1>
+
+<p>Help us with our research! We're using statistical learning methods to create a quiz to determine your Jungian type. We especially value responses from people who already have some idea of their Jungian/MBTI type, but everyone is welcome to take the quiz.</p>
+
+<div class="info-box">
+    <p>As our goals are reached, we will update our website and make the newly developed quiz available.</p>
+</div>
+
+<div class="info-box">
+    <p>If you have dyslexia, consider clicking the button on the top right to use a more dyslexic-friendly font.</p>
+</div>
+
+<div class="info-box">
+    <p>You can optionally share your Reddit username for our NLP research. Details are provided in the quiz.</p>
+</div>
+
+<div class="info-box">
+    <p>The quiz has 65 questions and takes about 10 minutes to complete. All responses are anonymous. You will get your Big 5 score at the end.</p>
+</div>
+
+<div style="margin: 24px 0;">
+    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #888; margin-bottom: 6px;">
+        <span>{{ count }} responses collected</span>
+        <span>Baseline Goal: 2,000 | Ideal Goal: 5,000</span>
+    </div>
+    <div style="background: #eee; border-radius: 4px; height: 12px; position: relative;">
+        {% set pct = count / 50 %}
+        {% if pct > 100 %}{% set pct = 100 %}{% endif %}
+        <div style="width: {{ pct }}%; height: 12px; border-radius: 4px; background-color: #1b2a4a;"></div>
+        <div style="position: absolute; left: 40%; top: -4px; bottom: -4px; width: 2px; background-color: #e74c3c;"></div>
+    </div>
+    <div style="display: flex; font-size: 11px; color: #aaa; margin-top: 4px;">
+        <span style="position: relative; left: 38%;">2k</span>
+        <span style="position: absolute; right: 24px;">5k</span>
+    </div>
+</div>
+
+<a href="/quiz" class="btn">Take the Quiz</a>
+{% endblock %}

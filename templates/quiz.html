@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Aleph Psychometrics - Quiz{% endblock %}
+
+{% block content %}
+<h1>Quiz</h1>
+<p>Rate each statement from 1 (Strongly Disagree) to 5 (Strongly Agree).</p>
+
+<form id="quiz-form">
+    {% for q in questions %}
+    <div class="question">
+        <p>{{ loop.index }}. {{ q.q }}</p>
+        <div class="options">
+            {% for val in [1, 2, 3, 4, 5] %}
+            <label>
+                <input type="radio" name="q_{{ q.id }}" value="{{ val }}" required>
+                <span>{{ val }}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="meta-section">
+        <h3>What is your MBTI/Jungian type?</h3>
+
+        <label>Your Type</label>
+        <select id="self_reported_jung" required>
+            <option value="">-- Select --</option>
+            <option value="IDK">I don't know my type</option>
+            <option value="INTJ">INTJ</option>
+            <option value="INTP">INTP</option>
+            <option value="ENTJ">ENTJ</option>
+            <option value="ENTP">ENTP</option>
+            <option value="INFJ">INFJ</option>
+            <option value="INFP">INFP</option>
+            <option value="ENFJ">ENFJ</option>
+            <option value="ENFP">ENFP</option>
+            <option value="ISTJ">ISTJ</option>
+            <option value="ISFJ">ISFJ</option>
+            <option value="ESTJ">ESTJ</option>
+            <option value="ESFJ">ESFJ</option>
+            <option value="ISTP">ISTP</option>
+            <option value="ISFP">ISFP</option>
+            <option value="ESTP">ESTP</option>
+            <option value="ESFP">ESFP</option>
+        </select>
+
+        <label id="confidence_label" style="display: none;">Confidence in your type (0-100%)</label>
+        <input type="number" id="type_confidence" min="0" max="100" placeholder="e.g. 75" style="display: none;">
+    </div>
+
+    <div class="meta-section">
+        <h3>Optional</h3>
+
+        <p style="font-size: 13px; color: #666; margin-bottom: 16px;">
+            If you share your Reddit username, we'll use your public posts (anonymized) to research
+            whether personality type can be predicted from text. Your username will be deleted after
+            processing. We will not store personally-identifiable data or sell your data.
+        </p>
+
+        <label>Reddit Username</label>
+        <input type="text" id="reddit_username" placeholder="your_username">
+    </div>
+
+    <button type="submit" class="btn">Submit</button>
+</form>
+
+<script>
+    // show/hide confidence based on type selection
+    document.getElementById("self_reported_jung").addEventListener("change", function() {
+        const conf = document.getElementById("type_confidence");
+        const confLabel = document.getElementById("confidence_label");
+        if (this.value === "IDK" || this.value === "") {
+            conf.style.display = "none";
+            confLabel.style.display = "none";
+            conf.value = "";
+        } else {
+            conf.style.display = "block";
+            confLabel.style.display = "block";
+        }
+    });
+
+    // form submission
+    document.getElementById("quiz-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // disable submit button to prevent double clicks
+        const submitBtn = document.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+
+        const responses = [];
+        {% for q in questions %}
+        const val_{{ q.id }} = document.querySelector('input[name="q_{{ q.id }}"]:checked');
+        if (val_{{ q.id }}) {
+            responses.push({
+                question_id: {{ q.id }},
+                answer: parseInt(val_{{ q.id }}.value)
+            });
+        }
+        {% endfor %}
+
+        const payload = {
+            responses: responses,
+            reddit_username: document.getElementById("reddit_username").value || null,
+            self_reported_jung: document.getElementById("self_reported_jung").value || null,
+            type_confidence: document.getElementById("type_confidence").value
+                ? parseInt(document.getElementById("type_confidence").value)
+                : null,
+        };
+
+        const res = await fetch("/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            document.cookie = "has_taken_quiz=true; max-age=31536000; path=/";
+            window.location.href = "/results/" + data.session_id;
+        } else {
+            const err = await res.json();
+            alert("Error: " + err.detail);
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit";
+        }
+    });
+</script>
+{% endblock %}

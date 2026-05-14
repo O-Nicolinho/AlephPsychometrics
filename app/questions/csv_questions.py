@@ -4,6 +4,9 @@ import csv
 
 import os
 
+LOWEST_QID = 2
+HIGHEST_QID = 66
+
 @dataclass
 class Question:
     id: int
@@ -19,7 +22,7 @@ def load_questions(filepath: str) -> list[Question]:
         for row in reader:
             questions.append(
                 Question(
-                    id=row["id"],
+                    id=int(row["id"]),
                     q=row["question"],
                     trait=row["trait"],
                     reverse=row["reverse"].lower() == "true",
@@ -31,4 +34,4 @@ def load_questions(filepath: str) -> list[Question]:
 
 
 QUESTIONS_DIR = os.path.dirname(__file__)
-big_five_questions = load_questions(os.path.join(QUESTIONS_DIR))
+csv_questions = load_questions(os.path.join(QUESTIONS_DIR, "questions.csv"))

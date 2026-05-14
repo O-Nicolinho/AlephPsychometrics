@@ -1,0 +1,5 @@
+venv/
+export.csv
+__pycache__/
+*.pyc
+.env

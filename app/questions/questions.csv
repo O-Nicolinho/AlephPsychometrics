@@ -1,5 +1,5 @@
 id,question,reverse,trait,category
-2,"I make social events more vibrant",false,e,big5
+2,"I tend to keep quiet in group conversations",true,e,big5
 3,"I feel little concern for most people",true,a,big5
 4,"I easily get stressed or anxious",false,n,big5
 5,"I have an extensive vocabulary",false,o,big5
@@ -21,7 +21,7 @@ id,question,reverse,trait,category
 21,"I often start conversations with strangers",false,e,big5
 22,"Other peoples' problems do not interest me at all.",true,a,big5
 23,"I get my chores, tasks, and duties done as soon as possible",false,c,big5
-24,"Things can get to me easily",false,n,big5
+24,"I tend to brush things off rather than dwelling on them",true,n,big5
 25,"Others frequently say that my contributions are interesting or insightful",false,o,big5
 26,"I prefer listening to talking",true,e,big5
 27,"People would say that I'm soft-hearted",false,a,big5

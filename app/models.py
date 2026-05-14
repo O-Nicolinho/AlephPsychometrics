@@ -1,7 +1,7 @@
 import uuid
 
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -23,11 +23,16 @@ class QuizSession(Base):
 
     responses = relationship("ItemResponse", back_populates="session")
 
-    big_five_Score = relationship("BigFiveScore", back_populates="session", uselist=False)
+    big_five_score = relationship("BigFiveScore", back_populates="session", uselist=False)
 
     #if the user so chooses, they can share their reddit usr
     #may help us train another model in the future
     reddit_username = Column(String, nullable=True)
+
+    self_reported_jung = Column(String, nullable=True)
+    type_confidence = Column(String, nullable=True)
+
+    is_repeat = Column(Boolean, default=False)
 
 
 class ItemResponse(Base):
@@ -36,29 +41,29 @@ class ItemResponse(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     #links a response to a given quiz session
-    session_id = Column(UUID(as_uuid=True), ForeignKey("quiz_sessions.id"), nulabble=False)
+    session_id = Column(UUID(as_uuid=True), ForeignKey("quiz_sessions.id"), nullable=False)
 
     #shows what question was answered, and what the ans was
-    question_id = Column(String,nullable=False)
+    question_id = Column(Integer,nullable=False)
     answer= Column(Integer, nullable=False)
 
     session = relationship("QuizSession", back_populates="responses")
 
-    class BigFiveScore(Base):
-        # so that sqlalchemy knows how to name postgres table
-        __tablename__="big_five_scores"
+class BigFiveScore(Base):
+    # so that sqlalchemy knows how to name postgres table
+    __tablename__="big_five_scores"
 
-        id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
-        session_id = Column(UUID(as_uuid=True), ForeignKey("quiz_sessions.id"), nullable=False)
+    session_id = Column(UUID(as_uuid=True), ForeignKey("quiz_sessions.id"), nullable=False)
 
-        openness = Column(Float, nullable=False)
-        conscientiousness = Column(Float, nullable=False)
-        extroversion = Column(Float, nullable=False)
-        agreeableness = Column(Float, nullable=False)
-        neuroticism = Column(Float, nullable=False)
+    openness = Column(Float, nullable=False)
+    conscientiousness = Column(Float, nullable=False)
+    extraversion = Column(Float, nullable=False)
+    agreeableness = Column(Float, nullable=False)
+    neuroticism = Column(Float, nullable=False)
 
-        session = relationship("QuizSession", back_populates="big_five_score")
+    session = relationship("QuizSession", back_populates="big_five_score")
 
 
 

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Psychometrics{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #fafaf8;
+            color: #2c2c2c;
+            line-height: 1.7;
+        }
+
+        body.dyslexic {
+            font-family: 'OpenDyslexic', sans-serif;
+        }
+
+        .navbar {
+            background-color: #1b2a4a;
+            padding: 16px 0;
+            margin-bottom: 40px;
+        }
+
+        .navbar-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .font-toggle {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        .font-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1b2a4a;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+            margin-top: 32px;
+        }
+
+        p {
+            margin-bottom: 13px;
+            font-size: 15px;
+            color: #000;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #1b2a4a;
+            color: #ffffff;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #2a3f6a;
+        }
+
+        .question {
+            background: #ffffff;
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            border-radius: 6px;
+            border: 1px solid #e0ddd8;
+        }
+
+        .question p {
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: #2c2c2c;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .options label {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .options input[type="radio"] {
+            display: none;
+        }
+
+        .options span {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #555;
+            transition: all 0.15s;
+        }
+
+        .options input[type="radio"]:checked + span {
+            background-color: #1b2a4a;
+            color: #ffffff;
+            border-color: #1b2a4a;
+        }
+
+        .options span:hover {
+            border-color: #1b2a4a;
+            color: #1b2a4a;
+        }
+
+        .meta-section {
+            background: #ffffff;
+            padding: 24px;
+            margin: 24px 0;
+            border-radius: 6px;
+            border: 1px solid #e0ddd8;
+        }
+
+        .meta-section h3 {
+            font-size: 17px;
+            color: #1b2a4a;
+            margin-bottom: 16px;
+        }
+
+        .meta-section label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #444;
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+
+        .meta-section input,
+        .meta-section select {
+            padding: 10px 12px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #2c2c2c;
+        }
+
+        .meta-section input:focus,
+        .meta-section select:focus {
+            outline: none;
+            border-color: #1b2a4a;
+        }
+
+        .results-trait {
+            background: #ffffff;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #e0ddd8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trait-name {
+            font-weight: 600;
+            color: #1b2a4a;
+            font-size: 15px;
+            min-width: 140px;
+        }
+
+        .trait-bar-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            background: #eee;
+            border-radius: 4px;
+            height: 10px;
+        }
+
+        .trait-bar {
+            height: 10px;
+            border-radius: 4px;
+            background-color: #1b2a4a;
+        }
+
+        .trait-score {
+            font-weight: 600;
+            color: #2c2c2c;
+            font-size: 15px;
+            min-width: 50px;
+            text-align: right;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <h2>Aleph Psychometrics</h2>
+            <button id="font-toggle" class="font-toggle" onclick="toggleFont()">Dyslexia-Friendly Font</button>
+        </div>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        function toggleFont() {
+            document.body.classList.toggle("dyslexic");
+            const isDyslexic = document.body.classList.contains("dyslexic");
+            localStorage.setItem("dyslexicFont", isDyslexic);
+            document.getElementById("font-toggle").textContent = isDyslexic
+                ? "Standard Font"
+                : "Dyslexia-Friendly Font";
+        }
+
+        if (localStorage.getItem("dyslexicFont") === "true") {
+            document.body.classList.add("dyslexic");
+            document.getElementById("font-toggle").textContent = "Standard Font";
+        }
+    </script>
+</body>
+</html>

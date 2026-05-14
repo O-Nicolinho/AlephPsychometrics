@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Your Results{% endblock %}
+
+{% block content %}
+<h1>Your Results</h1>
+<h2>Big Five Personality Traits</h2>
+
+<div class="results-trait">
+    <span class="trait-name">Openness</span>
+    <div class="trait-bar-container">
+        <div class="trait-bar" style="width: {{ big_five.o }}%"></div>
+    </div>
+    <span class="trait-score">{{ big_five.o }}%</span>
+</div>
+
+<div class="results-trait">
+    <span class="trait-name">Conscientiousness</span>
+    <div class="trait-bar-container">
+        <div class="trait-bar" style="width: {{ big_five.c }}%"></div>
+    </div>
+    <span class="trait-score">{{ big_five.c }}%</span>
+</div>
+
+<div class="results-trait">
+    <span class="trait-name">Extraversion</span>
+    <div class="trait-bar-container">
+        <div class="trait-bar" style="width: {{ big_five.e }}%"></div>
+    </div>
+    <span class="trait-score">{{ big_five.e }}%</span>
+</div>
+
+<div class="results-trait">
+    <span class="trait-name">Agreeableness</span>
+    <div class="trait-bar-container">
+        <div class="trait-bar" style="width: {{ big_five.a }}%"></div>
+    </div>
+    <span class="trait-score">{{ big_five.a }}%</span>
+</div>
+
+<div class="results-trait">
+    <span class="trait-name">Neuroticism</span>
+    <div class="trait-bar-container">
+        <div class="trait-bar" style="width: {{ big_five.n }}%"></div>
+    </div>
+    <span class="trait-score">{{ big_five.n }}%</span>
+</div>
+
+<div style="margin-top: 32px;">
+    <a href="/" class="btn">Take Again</a>
+</div>
+{% endblock %}

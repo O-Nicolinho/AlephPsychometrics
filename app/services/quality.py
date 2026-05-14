@@ -89,7 +89,7 @@ def reliability_score(responses:dict[int,int]) -> bool:
     crit2 = crit_two_score(responses)
     crit3 = crit_three_score(responses)
 
-    if crit1 >= THRESHOLD1 or crit2 >= THRESHOLD2 or max(crit3) >= THRESHOLD3:
+    if crit1 >= THRESHOLD1 or crit2 >= THRESHOLD2 or max(crit3.values()) >= THRESHOLD3:
         return False
     else:
         return True

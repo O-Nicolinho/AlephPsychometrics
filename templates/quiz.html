@@ -4,20 +4,27 @@
 
 {% block content %}
 <h1>Quiz</h1>
-<p>Rate each statement from 1 (Strongly Disagree) to 5 (Strongly Agree).</p>
+<p>Rate each statement from 1 (Strongly Disagree), 3 (Neutral) to 5 (Strongly Agree).</p>
 
 <form id="quiz-form">
     {% for q in questions %}
     <div class="question">
         <p>{{ loop.index }}. {{ q.q }}</p>
         <div class="options">
-            {% for val in [1, 2, 3, 4, 5] %}
-            <label>
-                <input type="radio" name="q_{{ q.id }}" value="{{ val }}" required>
-                <span>{{ val }}</span>
-            </label>
-            {% endfor %}
-        </div>
+    {% for val in [1, 2, 3, 4, 5] %}
+    <label>
+        <input type="radio" name="q_{{ q.id }}" value="{{ val }}" required>
+        <span>
+            {% if val == 1 %}Strongly Disagree
+            {% elif val == 2 %}Disagree
+            {% elif val == 3 %}Neutral
+            {% elif val == 4 %}Agree
+            {% elif val == 5 %}Strongly Agree
+            {% endif %}
+        </span>
+    </label>
+    {% endfor %}
+</div>
     </div>
     {% endfor %}
 

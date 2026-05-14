@@ -3,7 +3,7 @@ import anthropic
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-ANIMALS = ["stoat", "jaguar", "arctic_fox", "octopus", "moose", "hyena", "macaw", "orca", "crocodile", "beaver"]
+ANIMALS = ["stoat", "jaguar", "arctic_fox", "moose", "hyena", "macaw", "orca", "crocodile", "beaver"]
 
 
 def generate_summary(big_five: dict, jungian: dict) -> str:

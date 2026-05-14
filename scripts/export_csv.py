@@ -3,7 +3,6 @@ import csv
 import sys
 import os
 
-# add project root to path so we can import our app modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from app.database import SessionLocal
@@ -43,6 +42,8 @@ def export():
             "extraversion",
             "agreeableness",
             "neuroticism",
+            "animal",
+            "summary",
         ]
         header += [f"q_{qid}" for qid in question_ids]
         writer.writerow(header)
@@ -69,6 +70,14 @@ def export():
                 ]
             else:
                 row += [None, None, None, None, None]
+
+            if session.personality_summary:
+                row += [
+                    session.personality_summary.animal,
+                    session.personality_summary.summary,
+                ]
+            else:
+                row += [None, None]
 
             responses = db.query(ItemResponse).filter(
                 ItemResponse.session_id == session.id

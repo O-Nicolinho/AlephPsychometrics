@@ -34,6 +34,8 @@ class QuizSession(Base):
 
     is_repeat = Column(Boolean, default=False)
 
+    personality_summary = relationship("PersonalitySummary", back_populates="session", uselist=False)
+
 
 class ItemResponse(Base):
     __tablename__ = "item_responses"
@@ -65,7 +67,16 @@ class BigFiveScore(Base):
 
     session = relationship("QuizSession", back_populates="big_five_score")
 
+class PersonalitySummary(Base):
+    __tablename__ = "personality_summaries"
 
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    session_id = Column(UUID(as_uuid=True), ForeignKey("quiz_sessions.id"), nullable=False)
+    summary = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    animal = Column(String, nullable=True)
+
+    session = relationship("QuizSession", back_populates="personality_summary")
 
 
 

@@ -1,21 +1,20 @@
-
-
 from fastapi import FastAPI
-from app.database import engine, Base
-from app.routes.quiz import router as quiz_router
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from slowapi.errors import RateLimitExceeded
+from app.database import engine, Base
+from app.routes.quiz import router as quiz_router, limiter
 
 import app.models
 
-# this makes it so that SQLAlchemy creates our tables in postgres
-# it reads the models we created and makes corresponding tables
-# does not create dupes
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.state.limiter = limiter
 
-app.include_router(quiz_router)
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request, exc):
+    return JSONResponse(status_code=429, content={"detail": "Too many requests. Try again later."})
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 app.include_router(quiz_router)

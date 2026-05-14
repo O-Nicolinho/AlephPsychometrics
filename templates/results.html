@@ -1,52 +1,300 @@
 {% extends "base.html" %}
 
-{% block title %}Results{% endblock %}
+{% block title %}Your Results{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+    .results-section {
+        background: #ffffff;
+        border: 1px solid #e0ddd8;
+        border-radius: 8px;
+        padding: 28px;
+        margin-bottom: 24px;
+    }
+    .animal-section {
+        text-align: center;
+        padding: 36px 28px;
+    }
+    .animal-section img {
+        height: 160px;
+    }
+    .animal-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1b2a4a;
+        margin-top: 16px;
+        margin-bottom: 20px;
+    }
+    .summary-text {
+        font-size: 15px;
+        color: #333;
+        line-height: 1.8;
+        text-align: left;
+    }
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1b2a4a;
+        margin-bottom: 16px;
+    }
+    .btn-share {
+        display: inline-block;
+        background-color: #5cb85c;
+        color: #ffffff;
+        padding: 14px 32px;
+        border: none;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background-color 0.2s;
+    }
+    .btn-share:hover {
+        background-color: #4a9a4a;
+    }
+
+    .share-card {
+        width: 500px;
+        padding: 36px;
+        border-radius: 12px;
+        font-family: 'Inter', Arial, sans-serif;
+        position: absolute;
+        left: -9999px;
+        color: #ffffff;
+    }
+    .share-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+    .share-card-header img {
+        height: 28px;
+        width: 28px;
+    }
+    .share-card-header span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    .share-card-animal {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .share-card-animal img {
+        height: 100px;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+    .share-card-animal p {
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-top: 8px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    .share-card-trait {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+    .share-card-trait-name {
+        width: 140px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    .share-card-bar {
+        flex-grow: 1;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        margin: 0 12px;
+    }
+    .share-card-bar-fill {
+        height: 8px;
+        border-radius: 4px;
+        background-color: #ffffff;
+    }
+    .share-card-score {
+        width: 45px;
+        text-align: right;
+        font-weight: 600;
+        color: #ffffff;
+    }
+    .share-card-summary {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.6;
+        margin: 16px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 16px;
+    }
+    .share-card-footer {
+        text-align: center;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 12px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<h1>Thank you for taking the quiz! Your contribution really helps! Here are your results</h1>
-<h2>Big Five Personality Traits</h2>
+<h1>Thank you for taking the quiz!</h1>
+<p>Your contribution really helps our research. Here are your results.</p>
 
-<div class="results-trait">
-    <span class="trait-name">Openness</span>
-    <div class="trait-bar-container">
-        <div class="trait-bar" style="width: {{ big_five.o }}%"></div>
-    </div>
-    <span class="trait-score">{{ big_five.o }}%</span>
+<!-- animal color mapping: chosen to contrast with each animal's typical colors -->
+{% set animal_colors = {
+    "stoat": ["#2B4570", "#3A6B9F"],
+    "jaguar": ["#1B3A2D", "#2D6B4F"],
+    "arctic_fox": ["#4A2060", "#7B3FA0"],
+    "octopus": ["#1B4A4A", "#2A7A6A"],
+    "moose": ["#1b2a4a", "#2a4a7a"],
+    "hyena": ["#3D1C02", "#6B3410"],
+    "macaw": ["#1a1a2e", "#2d2d5e"],
+    "orca": ["#4A1942", "#7A2A6A"],
+    "crocodile": ["#2A1B4A", "#4A3070"],
+    "beaver": ["#1B3A4A", "#2A6070"]
+} %}
+{% set colors = animal_colors.get(animal, ["#1b2a4a", "#2a4a7a"]) %}
+
+<!-- section 1: animal + summary -->
+<div class="results-section animal-section">
+    {% if animal %}
+    <img src="/static/{{ animal }}.png" alt="{{ animal }}">
+    <p class="animal-title">You are the {{ animal | replace("_", " ") | capitalize }}</p>
+    {% endif %}
+
+    {% if summary %}
+    <p class="summary-text">{{ summary }}</p>
+    {% endif %}
 </div>
 
-<div class="results-trait">
-    <span class="trait-name">Conscientiousness</span>
-    <div class="trait-bar-container">
-        <div class="trait-bar" style="width: {{ big_five.c }}%"></div>
+<!-- section 2: big five scores -->
+<div class="results-section">
+    <p class="section-title">Big Five Personality Traits</p>
+
+    <div class="results-trait">
+        <span class="trait-name">Openness</span>
+        <div class="trait-bar-container">
+            <div class="trait-bar" style="width: {{ big_five.o }}%"></div>
+        </div>
+        <span class="trait-score">{{ big_five.o }}%</span>
     </div>
-    <span class="trait-score">{{ big_five.c }}%</span>
+
+    <div class="results-trait">
+        <span class="trait-name">Conscientiousness</span>
+        <div class="trait-bar-container">
+            <div class="trait-bar" style="width: {{ big_five.c }}%"></div>
+        </div>
+        <span class="trait-score">{{ big_five.c }}%</span>
+    </div>
+
+    <div class="results-trait">
+        <span class="trait-name">Extraversion</span>
+        <div class="trait-bar-container">
+            <div class="trait-bar" style="width: {{ big_five.e }}%"></div>
+        </div>
+        <span class="trait-score">{{ big_five.e }}%</span>
+    </div>
+
+    <div class="results-trait">
+        <span class="trait-name">Agreeableness</span>
+        <div class="trait-bar-container">
+            <div class="trait-bar" style="width: {{ big_five.a }}%"></div>
+        </div>
+        <span class="trait-score">{{ big_five.a }}%</span>
+    </div>
+
+    <div class="results-trait">
+        <span class="trait-name">Neuroticism</span>
+        <div class="trait-bar-container">
+            <div class="trait-bar" style="width: {{ big_five.n }}%"></div>
+        </div>
+        <span class="trait-score">{{ big_five.n }}%</span>
+    </div>
 </div>
 
-<div class="results-trait">
-    <span class="trait-name">Extraversion</span>
-    <div class="trait-bar-container">
-        <div class="trait-bar" style="width: {{ big_five.e }}%"></div>
-    </div>
-    <span class="trait-score">{{ big_five.e }}%</span>
+<!-- section 3: share -->
+<div class="results-section" style="text-align: center;">
+    <p class="section-title">Share your results!</p>
+    <p style="font-size: 14px; color: #666; margin-bottom: 16px;">Download a personalized card to share with friends.</p>
+    <button class="btn-share" onclick="downloadCard()">Download Share Card</button>
 </div>
 
-<div class="results-trait">
-    <span class="trait-name">Agreeableness</span>
-    <div class="trait-bar-container">
-        <div class="trait-bar" style="width: {{ big_five.a }}%"></div>
+<!-- hidden share card -->
+<div id="share-card" class="share-card" style="background: linear-gradient(135deg, {{ colors[0] }} 0%, {{ colors[1] }} 100%);">
+    <div class="share-card-header">
+        <img src="/static/logo.png" alt="Aleph">
+        <span>Aleph Psychometrics</span>
     </div>
-    <span class="trait-score">{{ big_five.a }}%</span>
+
+    {% if animal %}
+    <div class="share-card-animal">
+        <img src="/static/{{ animal }}.png" alt="{{ animal }}">
+        <p>{{ animal | replace("_", " ") | capitalize }}</p>
+    </div>
+    {% endif %}
+
+    <div class="share-card-trait">
+        <span class="share-card-trait-name">Openness</span>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.o }}%"></div></div>
+        <span class="share-card-score">{{ big_five.o }}%</span>
+    </div>
+    <div class="share-card-trait">
+        <span class="share-card-trait-name">Conscientiousness</span>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.c }}%"></div></div>
+        <span class="share-card-score">{{ big_five.c }}%</span>
+    </div>
+    <div class="share-card-trait">
+        <span class="share-card-trait-name">Extraversion</span>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.e }}%"></div></div>
+        <span class="share-card-score">{{ big_five.e }}%</span>
+    </div>
+    <div class="share-card-trait">
+        <span class="share-card-trait-name">Agreeableness</span>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.a }}%"></div></div>
+        <span class="share-card-score">{{ big_five.a }}%</span>
+    </div>
+    <div class="share-card-trait">
+        <span class="share-card-trait-name">Neuroticism</span>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.n }}%"></div></div>
+        <span class="share-card-score">{{ big_five.n }}%</span>
+    </div>
+
+    {% if summary %}
+    <div class="share-card-summary">{{ summary }}</div>
+    {% endif %}
+
+    <div class="share-card-footer">
+        Take the quiz at alephpsychometrics.org
+    </div>
 </div>
 
-<div class="results-trait">
-    <span class="trait-name">Neuroticism</span>
-    <div class="trait-bar-container">
-        <div class="trait-bar" style="width: {{ big_five.n }}%"></div>
-    </div>
-    <span class="trait-score">{{ big_five.n }}%</span>
-</div>
-
-<div style="margin-top: 32px;">
+<!-- take again -->
+<div style="text-align: center; margin-top: 12px;">
     <a href="/" class="btn">Take Again</a>
 </div>
+
+<script>
+    function downloadCard() {
+        const card = document.getElementById("share-card");
+        card.style.position = "fixed";
+        card.style.left = "0";
+        card.style.top = "0";
+
+        html2canvas(card, { scale: 2, backgroundColor: null }).then(canvas => {
+            card.style.position = "absolute";
+            card.style.left = "-9999px";
+
+            const link = document.createElement("a");
+            link.download = "my-personality.png";
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+</script>
 {% endblock %}

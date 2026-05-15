@@ -6,8 +6,9 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 ANIMALS = ["stoat", "jaguar", "arctic_fox", "moose", "hyena", "macaw", "orca", "crocodile", "beaver"]
 
 
-def generate_summary(big_five: dict, jungian: dict) -> str:
 
+
+def generate_summary(big_five: dict, jungian: dict) -> str:
 
     prompt = (f'I will give you a set of Big 5 and Jungian Cognitive Function scores, both ranging between 0 and 100. '
               f'You will use the scores to give the user an analysis of their personality. You must not explicitly mention the jungian functions scores or OCEAN scores of the user.'

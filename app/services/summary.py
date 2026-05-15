@@ -7,7 +7,6 @@ ANIMALS = ["stoat", "jaguar", "arctic_fox", "moose", "hyena", "macaw", "orca", "
 
 
 
-
 def generate_summary(big_five: dict, jungian: dict) -> str:
 
     prompt = (f'I will give you a set of Big 5 and Jungian Cognitive Function scores, both ranging between 0 and 100. '

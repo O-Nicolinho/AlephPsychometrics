@@ -4,7 +4,7 @@ import copy
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-ANIMALS = ["macaw", "snow_leopard", "raccoon", "lion", "crocodile", "moose", "capybara", "quokka", "stoat", "dolphin", "beaver", "wolf", "koala" ]
+ANIMALS = ["macaw", "snow_leopard", "red_fox", "lion", "crocodile", "moose", "capybara", "quokka", "stoat", "dolphin", "beaver", "wolf", "koala" ]
 
 
 
@@ -93,7 +93,7 @@ def pick_animal(big_five: dict, jungian: dict) -> str:
             elif ext <= 35:
                 return "snow_leopard"
             else:
-                return "raccoon"
+                return "red_fox"
         case "c":
             if ext >= 50:
                 return "wolf"

@@ -17,7 +17,15 @@
         padding: 36px 28px;
     }
     .animal-section img {
-        height: 160px;
+        height: 280px;
+        max-width: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 18px rgba(27, 42, 74, 0.18));
+    }
+    @media (max-width: 560px) {
+        .animal-section img {
+            height: 220px;
+        }
     }
     .animal-title {
         font-size: 22px;
@@ -56,86 +64,142 @@
     }
 
     .share-card {
-        width: 500px;
-        padding: 36px;
-        border-radius: 12px;
+        width: 900px;
+        min-height: 920px;
+        padding: 36px 44px;
+        border-radius: 24px;
         font-family: 'Inter', Arial, sans-serif;
         position: absolute;
         left: -9999px;
         color: #ffffff;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    }
+    .share-card::before {
+        content: "";
+        position: absolute;
+        inset: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 18px;
+        pointer-events: none;
+    }
+    .share-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.22), transparent 28%),
+            radial-gradient(circle at 82% 36%, rgba(255, 255, 255, 0.13), transparent 30%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.10));
+        pointer-events: none;
+    }
+    .share-card > * {
+        position: relative;
+        z-index: 1;
     }
     .share-card-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 24px;
+        gap: 14px;
+        margin-bottom: 26px;
     }
     .share-card-header img {
-        height: 28px;
-        width: 28px;
+        height: 36px;
+        width: 36px;
     }
     .share-card-header span {
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
         color: #ffffff;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+    .share-card-main {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 32px;
+        align-items: center;
+        margin-bottom: 22px;
     }
     .share-card-animal {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 0;
     }
     .share-card-animal img {
-        height: 100px;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        height: 285px;
+        max-width: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.35));
     }
     .share-card-animal p {
-        font-size: 18px;
-        font-weight: 700;
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
         color: #ffffff;
-        margin-top: 8px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        margin-top: 10px;
+        margin-bottom: 4px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+    .share-card-scores {
+        padding: 22px;
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(4px);
     }
     .share-card-trait {
-        display: flex;
+        display: grid;
+        grid-template-columns: 165px minmax(150px, 1fr) 86px;
         align-items: center;
-        margin-bottom: 8px;
-        font-size: 13px;
+        column-gap: 16px;
+        margin-bottom: 14px;
+        font-size: 16px;
+    }
+    .share-card-trait:last-child {
+        margin-bottom: 0;
     }
     .share-card-trait-name {
-        width: 140px;
-        font-weight: 600;
+        font-weight: 700;
         color: #ffffff;
+        white-space: nowrap;
     }
     .share-card-bar {
-        flex-grow: 1;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
-        margin: 0 12px;
+        width: 100%;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        overflow: hidden;
     }
     .share-card-bar-fill {
-        height: 8px;
-        border-radius: 4px;
+        height: 12px;
+        border-radius: 999px;
         background-color: #ffffff;
     }
     .share-card-score {
-        width: 45px;
         text-align: right;
-        font-weight: 600;
+        font-size: 18px;
+        font-weight: 800;
         color: #ffffff;
+        white-space: nowrap;
     }
     .share-card-summary {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.94);
         line-height: 1.6;
-        margin: 16px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        padding-top: 16px;
+        margin: 20px 0 16px;
+        padding: 20px 22px;
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
     }
     .share-card-footer {
         text-align: center;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
-        margin-top: 16px;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        margin-top: 18px;
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 12px;
     }
@@ -146,18 +210,21 @@
 <h1>Thank you for taking the quiz!</h1>
 <p>Your contribution really helps our research. Here are your results.</p>
 
-<!-- animal color mapping: chosen to contrast with each animal's typical colors -->
+<!-- animal color mapping: each animal gets a custom share-card gradient -->
 {% set animal_colors = {
-    "stoat": ["#2B4570", "#3A6B9F"],
-    "jaguar": ["#1B3A2D", "#2D6B4F"],
-    "arctic_fox": ["#4A2060", "#7B3FA0"],
-    "octopus": ["#1B4A4A", "#2A7A6A"],
-    "moose": ["#1b2a4a", "#2a4a7a"],
-    "hyena": ["#3D1C02", "#6B3410"],
-    "macaw": ["#1a1a2e", "#2d2d5e"],
-    "orca": ["#4A1942", "#7A2A6A"],
-    "crocodile": ["#2A1B4A", "#4A3070"],
-    "beaver": ["#1B3A4A", "#2A6070"]
+    "macaw": ["#13213F", "#C43A4B"],
+    "snow_leopard": ["#23314F", "#8EA7C8"],
+    "raccoon": ["#2A2633", "#7A6F86"],
+    "lion": ["#3A1F14", "#D08A2D"],
+    "crocodile": ["#172F26", "#6B7F3A"],
+    "moose": ["#1B2A4A", "#6A4A2F"],
+    "capybara": ["#3A2A20", "#B78252"],
+    "quokka": ["#4A2C3A", "#D48772"],
+    "stoat": ["#243B64", "#D9C7A3"],
+    "dolphin": ["#0E3A5B", "#4BA3C7"],
+    "beaver": ["#223B46", "#8B5A3C"],
+    "wolf": ["#1F2937", "#7E8A9A"],
+    "koala": ["#2F3146", "#9A8FB0"]
 } %}
 {% set colors = animal_colors.get(animal, ["#1b2a4a", "#2a4a7a"]) %}
 
@@ -226,43 +293,47 @@
 </div>
 
 <!-- hidden share card -->
-<div id="share-card" class="share-card" style="background: linear-gradient(135deg, {{ colors[0] }} 0%, {{ colors[1] }} 100%);">
+<div id="share-card" class="share-card" style="background: linear-gradient(145deg, {{ colors[0] }} 0%, {{ colors[1] }} 100%);">
     <div class="share-card-header">
         <img src="/static/logo.png" alt="Aleph">
         <span>Aleph Psychometrics</span>
     </div>
 
-    {% if animal %}
-    <div class="share-card-animal">
-        <img src="/static/{{ animal }}.png" alt="{{ animal }}">
-        <p>{{ animal | replace("_", " ") | capitalize }}</p>
-    </div>
-    {% endif %}
+    <div class="share-card-main">
+        {% if animal %}
+        <div class="share-card-animal">
+            <img src="/static/{{ animal }}.png" alt="{{ animal }}">
+            <p>The {{ animal | replace("_", " ") | capitalize }}</p>
+        </div>
+        {% endif %}
 
-    <div class="share-card-trait">
-        <span class="share-card-trait-name">Openness</span>
-        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.o }}%"></div></div>
-        <span class="share-card-score">{{ big_five.o }}%</span>
-    </div>
-    <div class="share-card-trait">
-        <span class="share-card-trait-name">Conscientiousness</span>
-        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.c }}%"></div></div>
-        <span class="share-card-score">{{ big_five.c }}%</span>
-    </div>
-    <div class="share-card-trait">
-        <span class="share-card-trait-name">Extraversion</span>
-        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.e }}%"></div></div>
-        <span class="share-card-score">{{ big_five.e }}%</span>
-    </div>
-    <div class="share-card-trait">
-        <span class="share-card-trait-name">Agreeableness</span>
-        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.a }}%"></div></div>
-        <span class="share-card-score">{{ big_five.a }}%</span>
-    </div>
-    <div class="share-card-trait">
-        <span class="share-card-trait-name">Neuroticism</span>
-        <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.n }}%"></div></div>
-        <span class="share-card-score">{{ big_five.n }}%</span>
+        <div class="share-card-scores">
+            <div class="share-card-trait">
+                <span class="share-card-trait-name">Openness</span>
+                <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.o }}%"></div></div>
+                <span class="share-card-score">{{ big_five.o }}%</span>
+            </div>
+            <div class="share-card-trait">
+                <span class="share-card-trait-name">Conscientiousness</span>
+                <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.c }}%"></div></div>
+                <span class="share-card-score">{{ big_five.c }}%</span>
+            </div>
+            <div class="share-card-trait">
+                <span class="share-card-trait-name">Extraversion</span>
+                <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.e }}%"></div></div>
+                <span class="share-card-score">{{ big_five.e }}%</span>
+            </div>
+            <div class="share-card-trait">
+                <span class="share-card-trait-name">Agreeableness</span>
+                <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.a }}%"></div></div>
+                <span class="share-card-score">{{ big_five.a }}%</span>
+            </div>
+            <div class="share-card-trait">
+                <span class="share-card-trait-name">Neuroticism</span>
+                <div class="share-card-bar"><div class="share-card-bar-fill" style="width: {{ big_five.n }}%"></div></div>
+                <span class="share-card-score">{{ big_five.n }}%</span>
+            </div>
+        </div>
     </div>
 
     {% if summary %}

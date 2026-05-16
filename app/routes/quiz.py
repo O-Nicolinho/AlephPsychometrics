@@ -9,7 +9,7 @@ from app.models import QuizSession, ItemResponse, BigFiveScore, PersonalitySumma
 from app.schemas import QuizSubmission, QuizResult
 from app.services.scoring import score_big_five, score_jung
 from app.services.quality import validate_responses, reliability_score
-from app.services.summary import generate_summary, pick_animal
+from app.services.summary import generate_summary, pick_animal, ANIMALS
 from app.questions.csv_questions import csv_questions
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -62,6 +62,8 @@ def submit_quiz(submission: QuizSubmission, request: Request, db: Session = Depe
 
     summary_text = generate_summary(big_five, jungian)
     animal = pick_animal(big_five, jungian)
+    if animal not in ANIMALS:
+        animal = "koala"
 
     session = QuizSession(
         started_at=datetime.utcnow(),

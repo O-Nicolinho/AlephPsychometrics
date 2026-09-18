@@ -2,6 +2,20 @@
 
 {% block title %}Aleph Psychometrics{% endblock %}
 
+{% block head_meta %}
+<meta name="description" content="A fun 10-minute personality quiz. Get a breakdown of your Big Five scores, a personality analysis tailored to you, and an animal match. All responses are anonymous.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Aleph Psychometrics">
+<meta property="og:title" content="Aleph Psychometrics">
+<meta property="og:description" content="A fun 10-minute personality quiz. Get a breakdown of your Big Five scores, a personality analysis tailored to you, and an animal match.">
+<meta property="og:url" content="https://alephpsychometrics.org/">
+<meta property="og:image" content="https://alephpsychometrics.org/static/logo.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Aleph Psychometrics">
+<meta name="twitter:description" content="A fun 10-minute personality quiz. Get a breakdown of your Big Five scores, a personality analysis tailored to you, and an animal match.">
+<meta name="twitter:image" content="https://alephpsychometrics.org/static/logo.png">
+{% endblock %}
+
 {% block extra_css %}
 <style>
     .info-box {
@@ -17,39 +31,61 @@
         font-size: 14px;
         margin-bottom: 0;
     }
+
+    .count-box {
+        background: #ffffff;
+        border: 1px solid #e0ddd8;
+        border-radius: 6px;
+        padding: 20px 24px;
+        margin: 24px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+    .count-number {
+        font-size: 36px;
+        font-weight: 700;
+        color: #1b2a4a;
+        line-height: 1.1;
+    }
+    .count-label {
+        font-size: 15px;
+        color: #444;
+    }
+
+    .coming-soon {
+        display: inline-block;
+        background: #eef1f7;
+        color: #1b2a4a;
+        border: 1px solid #ccd5e5;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 6px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <h1>Welcome!</h1>
 
-<p>Help us with our research! We're using machine learning to build more robust and effective personality-classification systems. The responses you provide are essential for these ends. Responses from people familiar with their MBTI/Jungian type are especially appreciated, but all are welcome and encouraged to take the quiz!.</p>
+<p>Help us with our research! We're using machine learning to build more robust and effective personality-classification systems. The responses you provide are essential for these ends. All are welcome and encouraged to take the quiz!</p>
 
 <div class="info-box">
-    <p>The quiz takes about 10 minutes. At the end, you'll receive a breakdown of your Big Five score, a personality analysis tailored to you, and for fun, an animal match (Which is a necessity for online quizzes!). All responses are anonymous.</p>
+    <p>The quiz takes about 10 minutes. At the end, you'll receive a breakdown of your Big Five score, a personality analysis tailored to you, and for fun, an animal match (which is a necessity for online quizzes!). All responses are anonymous.</p>
 </div>
 
 <a href="/quiz" class="btn" style="margin: 20px 0; display: inline-block;">Take the Quiz</a>
 
-<div style="margin: 24px 0;">
-    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #888; margin-bottom: 6px;">
-        <span>{{ count }} responses collected</span>
-        <span>Baseline Goal: 2,000 | Ideal Goal: 5,000</span>
-    </div>
-    <div style="background: #eee; border-radius: 4px; height: 12px; position: relative;">
-        {% set pct = count / 50 %}
-        {% if pct > 100 %}{% set pct = 100 %}{% endif %}
-        <div style="width: {{ pct }}%; height: 12px; border-radius: 4px; background-color: #1b2a4a;"></div>
-        <div style="position: absolute; left: 40%; top: -4px; bottom: -4px; width: 2px; background-color: #e74c3c;"></div>
-    </div>
-    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #aaa; margin-top: 4px;">
-    <span style="margin-left: 38%;">2k</span>
-    <span>5k</span>
-    </div>
+<div class="count-box">
+    <span class="count-number">{{ "{:,}".format(count) }}</span>
+    <span class="count-label">people have taken the quiz so far. Thank you!</span>
 </div>
 
 <div class="info-box">
-    <p>As we reach our goals, we will advance with the project and provide regular updates. Our first step will be to use the data gathered to train an ML model that predicts Jungian type more accurately than existing online quizzes. The resulting quiz and our methodology will be public and freely available. </p>
+    <p>As we gather more responses, we will advance with the project and provide regular updates. Our first step will be to use the data gathered to train an ML model that predicts Big Five traits from text alone. The resulting model and our methodology will be public and freely available. <span class="coming-soon">Coming soon</span></p>
 </div>
 
 <div class="info-box">

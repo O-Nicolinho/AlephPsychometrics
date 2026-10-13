@@ -36,6 +36,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .navbar h2 {
@@ -43,6 +45,37 @@
             font-size: 18px;
             font-weight: 700;
             letter-spacing: 0.3px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .nav-links a.active {
+            color: #ffffff;
+            border-bottom-color: #ffffff;
         }
 
         .font-toggle {
@@ -263,15 +296,23 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    {% set path = request.url.path if request else "" %}
     <div class="navbar">
-    <div class="navbar-inner">
-        <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-            <img src="/static/logo.png" alt="Aleph" style="height: 32px; width: 32px;">
-            <h2>Aleph Psychometrics</h2>
-        </a>
-        <button id="font-toggle" class="font-toggle" onclick="toggleFont()">Dyslexia-Friendly Font</button>
+        <div class="navbar-inner">
+            <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="/static/logo.png" alt="Aleph" style="height: 32px; width: 32px;">
+                <h2>Aleph Psychometrics</h2>
+            </a>
+            <div class="nav-right">
+                <nav class="nav-links">
+                    <a href="/" class="{{ 'active' if path == '/' }}">Home</a>
+                    <a href="/quiz" class="{{ 'active' if path.startswith('/quiz') }}">Quiz</a>
+                    <a href="/analyze" class="{{ 'active' if path.startswith('/analyze') }}">Model</a>
+                </nav>
+                <button id="font-toggle" class="font-toggle" onclick="toggleFont()">Dyslexia-Friendly Font</button>
+            </div>
+        </div>
     </div>
-</div>
     <div class="container">
         {% block content %}{% endblock %}
     </div>

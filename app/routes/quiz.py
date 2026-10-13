@@ -13,6 +13,10 @@ from app.services.summary import generate_summary, pick_animal, ANIMALS
 from app.questions.csv_questions import csv_questions
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+import os
+import httpx
+
+
 
 import random
 
@@ -30,10 +34,17 @@ def get_db():
         db.close()
 
 
+MODEL_URL = os.getenv("MODEL_URL", "http://localhost:8001")
+
 @router.get("/", response_class=HTMLResponse)
 def home(request: Request, db: Session = Depends(get_db)):
     count = db.query(QuizSession).count()
-    return templates.TemplateResponse(request, "home.html", {"count": count})
+    try:
+        model_count = httpx.get(f"{MODEL_URL}/count", timeout=1).json()["analyzed"]
+    except Exception:
+        model_count = None   # model service down: hide the box, don't break the home page
+    return templates.TemplateResponse(request, "home.html", {"count": count, "model_count": model_count})
+
 
 @router.get("/quiz", response_class=HTMLResponse)
 def quiz_page(request: Request):

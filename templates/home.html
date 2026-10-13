@@ -37,12 +37,23 @@
         border: 1px solid #e0ddd8;
         border-radius: 6px;
         padding: 20px 24px;
-        margin: 24px 0;
+        margin: 8px 0 28px;
         display: flex;
-        align-items: baseline;
-        gap: 14px;
         flex-wrap: wrap;
+        gap: 16px 0;
     }
+        .count-stat {
+        flex: 1 1 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 4px;
+        padding: 0 20px;
+    }
+    .count-stat + .count-stat { border-left: 1px solid #e0ddd8; }
+    .count-stat:first-child { padding-left: 0; }
+    .count-stat + .count-stat { border-left: 1px solid #e0ddd8; }
     .count-number {
         font-size: 36px;
         font-weight: 700;
@@ -54,16 +65,9 @@
         color: #444;
     }
 
-    .coming-soon {
-        display: inline-block;
-        background: #eef1f7;
-        color: #1b2a4a;
-        border: 1px solid #ccd5e5;
-        border-radius: 4px;
-        padding: 2px 8px;
-        font-size: 12px;
-        font-weight: 600;
-        margin-left: 6px;
+    @media (max-width: 480px) {
+        .count-stat { padding: 0; }
+        .count-stat + .count-stat { border-left: none; border-top: 1px solid #e0ddd8; padding-top: 16px; }
     }
 </style>
 {% endblock %}
@@ -71,23 +75,34 @@
 {% block content %}
 <h1>Welcome!</h1>
 
-<p>Help us with our research! We're using machine learning to build more robust and effective personality-classification systems. The responses you provide are essential for these ends. All are welcome and encouraged to take the quiz!</p>
+<div class="count-box">
+    <div class="count-stat">
+        <span class="count-number">{{ "{:,}".format(count) }}</span>
+        <span class="count-label">People who have taken the quiz so far.</span>
+    </div>
+    {% if model_count is not none %}
+    <div class="count-stat">
+        <span class="count-number">{{ "{:,}".format(model_count) }}</span>
+        <span class="count-label">Texts that our model has analyzed so far.</span>
+    </div>
+    {% endif %}
+</div>
 
+<p>We're using machine learning to build more robust and fun personality-classification systems. Your participation and feedback is essential! All are welcome and encouraged to take the quiz, or try out our text to big five score model!!</p>
+
+<h2>The Quiz</h2>
 <div class="info-box">
     <p>The quiz takes about 10 minutes. At the end, you'll receive a breakdown of your Big Five score, a personality analysis tailored to you, and for fun, an animal match (which is a necessity for online quizzes!). All responses are anonymous.</p>
 </div>
 
 <a href="/quiz" class="btn" style="margin: 20px 0; display: inline-block;">Take the Quiz</a>
 
-<div class="count-box">
-    <span class="count-number">{{ "{:,}".format(count) }}</span>
-    <span class="count-label">people have taken the quiz so far. Thank you!</span>
-</div>
-
+<h2>The Model</h2>
 <div class="info-box">
-    <p>As we gather more responses, we will advance with the project and provide regular updates. Our first step will be to use the data gathered to train an ML model that predicts Big Five traits from text alone. The resulting model and our methodology will be public and freely available. <span class="coming-soon">Coming soon</span></p>
+    <p>Using the data gathered so far, we trained a model that estimates Big Five traits from text alone. Paste something you've written and see what it guesses!</p>
 </div>
 
+<a href="/analyze" class="btn" style="margin: 20px 0; display: inline-block;">Try the Model</a>
 
 <p style="font-size: 12px; color: #999; margin-top: 16px;">Dyslexia-friendly font available via the button in the top right.</p>
 {% endblock %}

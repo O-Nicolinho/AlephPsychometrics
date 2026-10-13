@@ -6,6 +6,27 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 import threading
 from concurrent.futures import ThreadPoolExecutor
+import os
+
+COUNT_FILE = os.getenv("COUNT_FILE", "count.txt")
+count_lock = threading.Lock()
+
+def _read_count():
+    try:
+        with open(COUNT_FILE) as f:
+            return int(f.read())
+    except(FileNotFoundError,ValueError):
+        return 0
+
+analyzed = _read_count()
+
+# this func increases the analyzed count atomically!
+def _bump_count():
+    global analyzed
+    with count_lock:
+        analyzed += 1
+        with open(COUNT_FILE, "w") as f:
+            f.write(str(analyzed))
 
 executor = ThreadPoolExecutor(max_workers=1)
 MAX_IN_LINE = 3
@@ -51,6 +72,10 @@ class OutputBig5(BaseModel):
 async def health():
     return {"status": "ok"}
 
+@app.get("/count")
+def count():
+    return {"analyzed": analyzed}
+
 
 @app.post("/predict", response_model=OutputBig5)
 @limiter.limit("60/hour")
@@ -68,7 +93,9 @@ def predict(request: Request, inp: InputText):
     future.add_done_callback(_leave_line)
 
     try:
-        return future.result(timeout=WAIT_TIMEOUT)
+        result = future.result(timeout=WAIT_TIMEOUT)
+        _bump_count()
+        return result
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
     except TimeoutError as e:

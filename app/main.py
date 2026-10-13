@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 from app.database import engine, Base
 from app.routes.quiz import router as quiz_router, limiter
+from app.routes.analyze import router as analyze_router
 
 import app.models
 
@@ -18,3 +19,4 @@ async def rate_limit_handler(request, exc):
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(quiz_router)
+app.include_router(analyze_router)

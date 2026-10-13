@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="analyze">
+  <h1>Enter text you've written, and our model will guess your personality!</h1>
+  <p>Paste something you wrote yourself: forum posts, emails, journal entries, etc. The model estimates your
+     Big Five scores from your writing. More text gives better estimates, so aim for a few thousand words.
+     Try to avoid using academic or formal text if possible.
+     Your text is not saved.</p>
+
+  <form id="analyze-form">
+    <textarea id="text" rows="12" maxlength="100000" placeholder="Paste your text here…"></textarea>
+    <div class="analyze-row">
+      <span id="count" class="analyze-muted">0 / 100,000 characters (minimum 200)</span>
+      <button id="submit" type="submit" disabled>Analyze</button>
+    </div>
+  </form>
+
+  <p id="status" role="status"></p>
+
+  <div id="results" hidden>
+    <div id="bars"></div>
+    <p id="truncated" class="analyze-muted" hidden>
+      Your text was longer than the model can read (about 12,000 words), so only the first part was used.
+    </p>
+  </div>
+
+  <div class="analyze-muted analyze-caveat">
+    <p>These are rough estimates. Personality is far from the only factor that affects written content and style, so it cannot be determined through it alone. Education, context, culture, also play an important role.</p>
+    <p>We developed this model with the hope of extracting as much personality signal as possible from written text, but its efficacy varies depending on domain. For example, when tested on Twitter users, our model had a Pearson correlation of 0.398 with the correct scores on average, whereas for the Reddit users tested this figure drops to around 0.14.
+       For a more accurate score, take our quiz!</p>
+  </div>
+  <a href="/quiz" class="analyze-quiz-btn">Take the quiz</a>
+</section>
+
+<style>
+  .analyze-quiz-btn { display: inline-block; margin-top: .75rem; padding: .6rem 1.2rem; border-radius: .4rem; border: 1px solid currentColor; color: inherit; text-decoration: none; }
+  .analyze-quiz-btn:hover { opacity: .8; }
+  .analyze textarea { width: 100%; box-sizing: border-box; padding: .75rem; font: inherit; resize: vertical; }
+  .analyze-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: .5rem; flex-wrap: wrap; }
+  .analyze-muted { opacity: .7; font-size: .9rem; }
+  .analyze-caveat { margin-top: 2rem; }
+  .bar-row { margin: .9rem 0; }
+  .bar-label { display: flex; justify-content: space-between; margin-bottom: .25rem; }
+  .bar-track { height: .7rem; border-radius: .35rem; background: rgba(127,127,127,.2); overflow: hidden; }
+  .bar-fill { height: 100%; width: 0; background: currentColor; transition: width .6s ease; }
+</style>
+
+<script>
+  const MIN = 200;
+  const TRAITS = ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"];
+  const COLORS = {
+    openness: "#8b5cf6",          // violet
+    conscientiousness: "#3b82f6", // blue
+    extraversion: "#f59e0b",      // amber
+    agreeableness: "#10b981",     // green
+    neuroticism: "#ef4444",       // red
+  };
+  const form = document.getElementById("analyze-form");
+  const textEl = document.getElementById("text");
+  const countEl = document.getElementById("count");
+  const btn = document.getElementById("submit");
+  const statusEl = document.getElementById("status");
+  const results = document.getElementById("results");
+  const bars = document.getElementById("bars");
+  const truncEl = document.getElementById("truncated");
+
+  // live character counter + enable the button only once there's enough text
+  textEl.addEventListener("input", () => {
+    const n = textEl.value.trim().length;
+    countEl.textContent = `${n.toLocaleString()} / 100,000 characters` + (n < MIN ? ` (minimum ${MIN})` : "");
+    btn.disabled = n < MIN;
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();                      // stop the browser doing a normal form submit / page reload
+    btn.disabled = true;
+    results.hidden = true;
+    statusEl.textContent = "Analyzing… this can take up to a minute.";
+    try {
+      const resp = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: textEl.value }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        statusEl.textContent = errorMessage(resp.status, data);
+        return;
+      }
+      showResults(data);
+      statusEl.textContent = "";
+    } catch {
+      statusEl.textContent = "Couldn't reach the server. Check your connection and try again.";
+    } finally {
+      btn.disabled = textEl.value.trim().length < MIN;
+    }
+  });
+
+  function errorMessage(status, data) {
+    // your routes send a sentence; Pydantic's 422 sends a list, so replace that with our own message
+    if (typeof data.detail === "string") return data.detail;
+    if (status === 422) return "Please enter between 200 and 100,000 characters.";
+    return "Something went wrong. Please try again.";
+  }
+
+  function showResults(data) {
+    bars.replaceChildren();
+    for (const trait of TRAITS) {
+      const score = Math.round(data[trait]);
+      const row = document.createElement("div");
+      row.className = "bar-row";
+      row.innerHTML = `<div class="bar-label"><span></span><strong></strong></div>
+                       <div class="bar-track"><div class="bar-fill"></div></div>`;
+      row.querySelector("span").textContent = trait[0].toUpperCase() + trait.slice(1);
+      row.querySelector("strong").textContent = score;
+      row.querySelector("strong").style.color = COLORS[trait];
+      row.querySelector(".bar-fill").style.background = COLORS[trait];
+      bars.appendChild(row);
+      requestAnimationFrame(() => { row.querySelector(".bar-fill").style.width = score + "%"; });
+    }
+    truncEl.hidden = !data.truncated;
+    results.hidden = false;
+  }
+</script>
+{% endblock %}

@@ -25,8 +25,11 @@ def _bump_count():
     global analyzed
     with count_lock:
         analyzed += 1
-        with open(COUNT_FILE, "w") as f:
-            f.write(str(analyzed))
+        try:
+            with open(COUNT_FILE, "w") as f:
+                f.write(str(analyzed))
+        except OSError as e:
+            print(f"could not save count: {e}", flush=True)  # results still go back to the user
 
 executor = ThreadPoolExecutor(max_workers=1)
 MAX_IN_LINE = 3

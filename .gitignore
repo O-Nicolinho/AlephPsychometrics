@@ -7,3 +7,4 @@ __pycache__/
 count.txt
 registry.csv
 local.db
+.DS_Store

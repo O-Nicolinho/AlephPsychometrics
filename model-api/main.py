@@ -25,12 +25,15 @@ def _bump_count():
     global analyzed
     with count_lock:
         analyzed += 1
+        tmp = COUNT_FILE + ".tmp"
         try:
-            with open(COUNT_FILE, "w") as f:
+            with open(tmp, "w") as f:
                 f.write(str(analyzed))
+                f.flush()
+                os.fsync(f.fileno())      # make sure the bytes are on disk before the swap
+            os.replace(tmp, COUNT_FILE)   # atomic: the file is either the old count or the new one
         except OSError as e:
             print(f"could not save count: {e}", flush=True)  # results still go back to the user
-
 executor = ThreadPoolExecutor(max_workers=1)
 MAX_IN_LINE = 3
 WAIT_TIMEOUT = 200

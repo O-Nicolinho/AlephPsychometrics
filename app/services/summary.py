@@ -18,7 +18,7 @@ def generate_summary(big_five: dict, jungian: dict) -> str:
               f'\nJung: ni:{jungian["ni"]*100}, ne:{jungian["ne"]*100}, si:{jungian["si"]*100}, se:{jungian["se"]*100}, ti:{jungian["ti"]*100}, te:{jungian["te"]*100}, fi:{jungian["fi"]*100}, fe:{jungian["fe"]*100} ')
 
     message = client.messages.create(
-            model="claude-haiku-4-5-20251001",
+            model="claude-haiku-5-5",
             max_tokens=500,
             messages=[
                 {"role": "user", "content": prompt}]

@@ -65,7 +65,7 @@ This worked quite well: 682+ people took the quiz, and the whole thing cost less
 
 ## 2. The Reddit dataset
 
-Out of the 682 quiz takers, 142 provided a valid Reddit username (which is a pretty surprising amount!). We used the **Arctic Shift** archive to retrieve each user's posts, and then packed each user's history into chunks:
+Out of the 682 quiz takers, 142 provided a valid Reddit username (which is a pretty surprising amount!). We used the Arctic Shift archive to retrieve each user's posts, and then packed each user's history into chunks:
 
 - Whole items are packed into a chunk until the next one wouldn't fit, with a budget of about 4,080 ModernBERT tokens (just under the model's 4,096 limit, so nothing gets truncated in training).
 - Each user gets at most 4 chunks, which matches the 4-chunk limit at inference time (see [the model API](#6-the-model-api)).
@@ -79,7 +79,7 @@ Even though we ended up with a dataset of a decent size, we opted to use it prim
 
 ## 3. The model
 
-We fine-tuned ModernBERT-large with a five-output regression head on several mixtures of Essays, PAN 2015 (tweets), PANDORA (Reddit), and a synthetic dataset of Reddit-style comments we generated with Claude, and we evaluated each model on the PAN 2015 test set and on our 142 Reddit users. Our best model, **FullP** (trained on all four sources), reaches a mean Pearson correlation of **.398 on PAN 2015** and **.141 on the Aleph Reddit test set** (90% CI [.087, .194]).
+We fine-tuned ModernBERT-large with a five-output regression head on several mixtures of Essays, PAN 2015 (tweets), PANDORA (Reddit), and a synthetic dataset of Reddit-style comments we generated with Claude, and we evaluated each model on the PAN 2015 test set and on our 142 Reddit users. Our best model, FullP (trained on all four sources), reaches a mean Pearson correlation of .398 on PAN 2015 and .141 on the Aleph Reddit test set (90% CI [.087, .194]).
 
 The full methodology, per-trait results, and limitations are in the [model write-up](docs/Aleph_Psychometrics_Model_Writeup.pdf).
 
@@ -108,10 +108,10 @@ Tech Stack: FastAPI, Jinja2 templates, SQLAlchemy on PostgreSQL, slowapi for rat
 |---|---|
 | `GET /` | Home page. Shows the quiz count (from the DB) and the texts-analyzed count (from the model API's `/count`, with a 1 s timeout; if the model API is asleep or down, that box is simply hidden). |
 | `GET /quiz` | The quiz, with the questions shuffled. |
-| `POST /submit` | Validates the responses, computes the scores and the reliability flag, gets the summary from Haiku, picks the animal, and stores everything. Limited to **3/minute per IP**. |
+| `POST /submit` | Validates the responses, computes the scores and the reliability flag, gets the summary from Haiku, picks the animal, and stores everything. Limited to 3/minute per IP. |
 | `GET /results/{session_id}` | The results page and share card. Session IDs are UUIDs, so results can't be guessed by incrementing a number. |
 | `GET /analyze` | The text-analysis page. |
-| `POST /api/analyze` | Forwards the user's text to the model API and returns the scores. Limited to **5/minute and 30/day per IP**. |
+| `POST /api/analyze` | Forwards the user's text to the model API and returns the scores. Limited to 5/minute and 30/day per IP. |
 
 ### Database
 

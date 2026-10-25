@@ -18,13 +18,16 @@ def generate_summary(big_five: dict, jungian: dict) -> str:
               f'\nJung: ni:{jungian["ni"]*100}, ne:{jungian["ne"]*100}, si:{jungian["si"]*100}, se:{jungian["se"]*100}, ti:{jungian["ti"]*100}, te:{jungian["te"]*100}, fi:{jungian["fi"]*100}, fe:{jungian["fe"]*100} ')
 
     message = client.messages.create(
-            model="claude-haiku-5-5",
-            max_tokens=500,
-            messages=[
-                {"role": "user", "content": prompt}]
-        )
+        model="claude-haiku-5-5",
+        max_tokens=2000,
+        output_config={"effort": "low"},
+        messages=[{"role": "user", "content": prompt}],
+    )
 
-    return message.content[0].text
+    text = next((b.text for b in message.content if b.type == "text"), None)
+    if text is None:
+        raise RuntimeError(f"No text block in response (stop_reason={message.stop_reason})")
+    return text
 
 
 #def pick_animal(big_five: dict, jungian: dict) -> str:

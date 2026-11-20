@@ -11,16 +11,16 @@ ANIMALS = ["macaw", "snow_leopard", "red_fox", "lion", "crocodile", "moose", "ca
 def generate_summary(big_five: dict, jungian: dict) -> str:
 
     prompt = (f'I will give you a set of Big 5 and Jungian Cognitive Function scores, both ranging between 0 and 100. '
-              f'You will use the scores to give the user an analysis of their personality. You must not explicitly mention the jungian functions scores or OCEAN scores of the user.'
-              f' You are however expected to base your analysis primarily on their scores. Try to be insightful. '
-              f'Try to give a good overview of the personality of the user. Be warm but honest, NEVER use em dashes or bullet points, just provide a clear paragraph. Try to keep it under 150 words or so.Jump straight into describing the user, start with "You are... or You display or similar. \nHere are the scores:'
+              f'You are however expected to base your analysis primarily on their scores. Try to be insightful. '
+              f'Try to give a good overview of the personality of the user. Be warm but honest, NEVER use em dashes or bullet points, just provide a clear paragraph. Try to keep it under 150 words or so. Jump straight into describing the user. \nHere are the scores:'
               f'openness:{big_five["o"]}, conscientiousness:{big_five["c"]}, extraversion:{big_five["e"]}, agreeableness: {big_five["a"]}, neuroticism:{big_five["n"]}'
-              f'\nJung: ni:{jungian["ni"]*100}, ne:{jungian["ne"]*100}, si:{jungian["si"]*100}, se:{jungian["se"]*100}, ti:{jungian["ti"]*100}, te:{jungian["te"]*100}, fi:{jungian["fi"]*100}, fe:{jungian["fe"]*100} ')
+              f'\nJung: ni:{jungian["ni"]*100}, ne:{jungian["ne"]*100}, si:{jungian["si"]*100}, se:{jungian["se"]*100}, ti:{jungian["ti"]*100}, te:{jungian["te"]*100}, fi:{jungian["fi"]*100}, fe:{jungian["fe"]*100} '
+              f'You will use the scores to give the user an analysis of their personality. You must not explicitly mention the jungian functions scores or OCEAN scores of the user.')
 
     message = client.messages.create(
         model="claude-haiku-5-5",
         max_tokens=2000,
-        output_config={"effort": "low"},
+        output_config={"effort": "medium"},
         messages=[{"role": "user", "content": prompt}],
     )
 
